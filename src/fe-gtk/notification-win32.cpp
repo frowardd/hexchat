@@ -73,11 +73,11 @@ InstallShortcut(const std::wstring& shortcutPath)
 		IShellLinkWPtr shellLink(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER);
 		if (!shellLink)
 			_com_issue_error(E_NOINTERFACE);
-			
+
 		_com_util::CheckError(shellLink->SetPath(exePath));
 
 		_com_util::CheckError(shellLink->SetArguments(L""));
-			
+
 		IPropertyStorePtr propertyStore(shellLink);
 		if (!propertyStore)
 			_com_issue_error(E_NOINTERFACE);
@@ -86,13 +86,13 @@ InstallShortcut(const std::wstring& shortcutPath)
 		_com_util::CheckError(InitPropVariantFromString(AppId, &appIdPropVar));
 		std::unique_ptr<PROPVARIANT, decltype(&PropVariantClear)> pro_var(&appIdPropVar, PropVariantClear);
 		_com_util::CheckError(propertyStore->SetValue(PKEY_AppUserModel_ID, appIdPropVar));
-			
+
 		_com_util::CheckError(propertyStore->Commit());
-			
+
 		IPersistFilePtr persistFile(shellLink);
 		if (!persistFile)
 			_com_issue_error(E_NOINTERFACE);
-			
+
 		_com_util::CheckError(persistFile->Save(shortcutPath.c_str(), TRUE));
 	}
 	catch (const _com_error & ex)
