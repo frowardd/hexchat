@@ -397,7 +397,7 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
-#if !defined (WIN32) && !defined (__APPLE__)
+#if !defined (__APPLE__)
 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
 #endif
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
@@ -422,17 +422,11 @@ static const setting alert_settings[] =
 	{ST_TOGGLE,	N_("Omit alerts while the window is focused"), P_OFFINTNL(hex_gui_focus_omitalerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Tray Behavior"), 0, 0, 0},
-#ifdef WIN32
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 3},
-#else
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 4},
-#endif
 	{ST_TOGGLE,	N_("Minimize to tray"), P_OFFINTNL(hex_gui_tray_minimize), 0, 0, 0},
 	{ST_TOGGLE,	N_("Close to tray"), P_OFFINTNL(hex_gui_tray_close), 0, 0, 0},
 	{ST_TOGGLE,	N_("Automatically mark away/back"), P_OFFINTNL(hex_gui_tray_away), N_("Automatically change status when hiding to tray."), 0, 0},
-#ifndef WIN32
 	{ST_TOGGLE,	N_("Only show tray balloons when hidden or iconified"), P_OFFINTNL(hex_gui_tray_quiet), 0, 0, 0},
-#endif
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},

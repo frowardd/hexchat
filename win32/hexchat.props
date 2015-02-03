@@ -85,6 +85,7 @@ xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(HexChatRel)\l
 xcopy /q /s /i "$(HexChatBin)hcchecksum.dll" "$(HexChatRel)\plugins\"
 copy "$(HexChatBin)hcdoat.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcexec.dll" "$(HexChatRel)\plugins"
+copy "$(HexChatBin)hcnotifications.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcfishlim.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcmpcinfo.dll" "$(HexChatRel)\plugins"
 copy "$(HexChatBin)hcperl.dll" "$(HexChatRel)\plugins"
