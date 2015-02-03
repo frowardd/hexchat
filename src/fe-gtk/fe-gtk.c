@@ -49,6 +49,7 @@
 #include "notifygui.h"
 #include "textgui.h"
 #include "fkeys.h"
+#include "plugin-notification.h"
 #include "plugin-tray.h"
 #include "urlgrab.h"
 #include "setup.h"
@@ -382,6 +383,7 @@ fe_idle (gpointer data)
 	session *sess = sess_list->data;
 
 	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
+	plugin_add (sess, NULL, NULL, notification_plugin_init, notification_plugin_deinit, NULL, FALSE);
 
 	if (arg_minimize == 1)
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
