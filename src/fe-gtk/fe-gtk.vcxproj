@@ -81,7 +81,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WIN64;_AMD64_;NDEBUG;_WINDOWS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..;../common;$(DepsRoot)\include;$(Glib);$(Gtk);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -91,7 +91,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(DepLibs);common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(DepLibs);runtimeobject.lib;shlwapi.lib;common.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
@@ -106,6 +106,10 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
       ]]></Command>
       <Message>Build hexchat.rc and gresource file</Message>
     </PreBuildEvent>
+    <Manifest>
+      <AdditionalManifestFiles>$(SolutionDir)manifest.xml;%(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
+    <ClCompile />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ascii.h" />
@@ -120,9 +124,11 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <ClInclude Include="joind.h" />
     <ClInclude Include="maingui.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="notification-backend.h" />
     <ClInclude Include="notifygui.h" />
     <ClInclude Include="palette.h" />
     <ClInclude Include="pixmaps.h" />
+    <ClInclude Include="plugin-notification.h" />
     <ClInclude Include="plugin-tray.h" />
     <ClInclude Include="plugingui.h" />
     <ClInclude Include="rawlog.h" />
@@ -150,9 +156,14 @@ powershell "Get-Content -Encoding UTF8 '$(SolutionDir)..\src\fe-gtk\hexchat.rc.u
     <ClCompile Include="joind.c" />
     <ClCompile Include="maingui.c" />
     <ClCompile Include="menu.c" />
+    <ClCompile Include="notification-win32.cpp">
+      <CompileAsWinRT>true</CompileAsWinRT>
+      <AdditionalUsingDirectories>$(VCInstallDir)vcpackages;$(FrameworkSdkDir)References\CommonConfiguration\Neutral;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
     <ClCompile Include="notifygui.c" />
     <ClCompile Include="palette.c" />
     <ClCompile Include="pixmaps.c" />
+    <ClCompile Include="plugin-notification.c" />
     <ClCompile Include="plugin-tray.c" />
     <ClCompile Include="plugingui.c" />
     <ClCompile Include="rawlog.c" />

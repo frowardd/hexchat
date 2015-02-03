@@ -42,6 +42,8 @@
 #include <windows.ui.notifications.h>
 #include <comdef.h>
 
+static const wchar_t AppId[] = L"Hexchat.Desktop.Notify";
+
 static std::wstring
 widen(const std::string & to_widen)
 {
@@ -125,52 +127,61 @@ TryInstallAppShortcut ()
 	return hr;
 }
 
-void
-notification_backend_show (const char *title, const char *text, int timeout)
+extern "C"
 {
-	try
+	void
+	notification_backend_show (const char *title, const char *text, int timeout)
 	{
-		auto toastTemplate =
-			Windows::UI::Notifications::ToastNotificationManager::GetTemplateContent (
-			Windows::UI::Notifications::ToastTemplateType::ToastText02);
-		auto node_list = toastTemplate->GetElementsByTagName (Platform::StringReference (L"text"));
-		UINT node_count = node_list->Length;
+		try
+		{
+			auto toastTemplate =
+				Windows::UI::Notifications::ToastNotificationManager::GetTemplateContent (
+				Windows::UI::Notifications::ToastTemplateType::ToastText02);
+			auto node_list = toastTemplate->GetElementsByTagName (Platform::StringReference (L"text"));
+			UINT node_count = node_list->Length;
 
-		auto wtitle = widen (title);
-		node_list->GetAt (0)->AppendChild (
-			toastTemplate->CreateTextNode (Platform::StringReference (wtitle.c_str (), wtitle.size ())));
+			auto wtitle = widen (title);
+			node_list->GetAt (0)->AppendChild (
+				toastTemplate->CreateTextNode (Platform::StringReference (wtitle.c_str (), wtitle.size ())));
 
-		auto wtext = widen (text);
-		node_list->GetAt (1)->AppendChild (
-			toastTemplate->CreateTextNode (
-			Platform::StringReference (wtext.c_str (), wtext.size ())));
+			auto wtext = widen (text);
+			node_list->GetAt (1)->AppendChild (
+				toastTemplate->CreateTextNode (
+				Platform::StringReference (wtext.c_str (), wtext.size ())));
 
-		auto notifier = Windows::UI::Notifications::ToastNotificationManager::CreateToastNotifier (Platform::StringReference (AppId));
-		notifier->Show (ref new Windows::UI::Notifications::ToastNotification (toastTemplate));
+			auto notifier = Windows::UI::Notifications::ToastNotificationManager::CreateToastNotifier (Platform::StringReference (AppId));
+			notifier->Show (ref new Windows::UI::Notifications::ToastNotification (toastTemplate));
+		}
+		catch (Platform::Exception ^ ex)
+		{
+		}
 	}
-	catch (Platform::Exception ^ ex)
+
+	int
+	notification_backend_init (void)
 	{
-		auto what = ex->ToString ();
+		if (!IsWindows8Point1OrGreater ())
+			return 0;
 
-		hexchat_printf (ph, "An Error Occurred Printing a Notification HRESULT: %#X : %s", static_cast<unsigned long>(ex->HResult), narrow (what->Data ()).c_str ());
+		if (FAILED (Windows::Foundation::Initialize (RO_INIT_SINGLETHREADED)))
+			return FALSE;
+
+		if (FAILED (TryInstallAppShortcut ()))
+			return 0;
+
+		return 1;
 	}
-}
 
-int
-notification_backend_init (void)
-{
-	return 0;
-}
+	void
+	notification_backend_deinit (void)
+	{
+		Windows::Foundation::Uninitialize ();
+	}
 
-void
-notification_backend_deinit (void)
-{
-	Windows::Foundation::Uninitialize();
-}
-
-int
-notification_backend_supported (void)
-{
-	/* FIXME: or portable-mode? */
-	return IsWindows8Point1OrGreater();
+	int
+	notification_backend_supported (void)
+	{
+		/* FIXME: or portable-mode? */
+		return IsWindows8Point1OrGreater ();
+	}
 }

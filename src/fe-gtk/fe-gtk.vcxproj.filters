@@ -93,6 +93,12 @@
     <ClInclude Include="setup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="notification-backend.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plugin-notification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ascii.c">
@@ -180,6 +186,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="resources.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="notification-win32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plugin-notification.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
