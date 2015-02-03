@@ -19,7 +19,7 @@
 #include "config.h"
 #include <glib.h>
 
-#include "hexchat-plugin.h"
+#include "../common/hexchat-plugin.h"
 #include "notification-backend.h"
 
 #define _(x) hexchat_gettext (ph,x)
